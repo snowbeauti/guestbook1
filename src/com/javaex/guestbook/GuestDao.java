@@ -133,13 +133,14 @@ public class GuestDao {
 			query += "        name,";
 			query += "        password, ";
 			query += "        content, ";
-			query += "        to_char(reg_date, 'yyyy-mm-dd HH:MI:SS') ";
+			query += "        reg_date ";
 			query += " FROM guestbook ";
-			//query += " where no = ? ";
-
+			query += " where no = ? ";
+			
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, No);
 
+			
 			rs = pstmt.executeQuery();
 
 			// 4.결과처리
@@ -149,7 +150,7 @@ public class GuestDao {
 				String name = rs.getString("name");
 				String password = rs.getString("password");
 				String content = rs.getString("content");
-				String regDate = rs.getString("to_char(reg_date, 'yyyy-mm-dd HH:MI:SS')");
+				String regDate = rs.getString("reg_date");
 
 				guestVo = new GuestVo(no, name, password, content, regDate);
 			}
@@ -162,7 +163,7 @@ public class GuestDao {
 	}
 
 	// 삭제
-	public int delete(int no) {
+	public int delete(GuestVo guestVo) {
 		int count = 0;
 		getConnection();
 
@@ -174,7 +175,8 @@ public class GuestDao {
 			query += " and password = ? ";
 
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, no);
+			pstmt.setInt(1, guestVo.getNo());
+			pstmt.setString(2, guestVo.getPassword());
 
 			count = pstmt.executeUpdate();
 			
@@ -200,7 +202,7 @@ public class GuestDao {
 			query += "        name,";
 			query += "        password, ";
 			query += "        content, ";
-			query += "        to_char(reg_date, 'yyyy-mm-dd HH:MI:SS') ";
+			query += "        reg_date ";
 			query += " FROM guestbook ";
 
 			pstmt = conn.prepareStatement(query);
@@ -212,7 +214,7 @@ public class GuestDao {
 				String name = rs.getString("name");
 				String password = rs.getString("password");
 				String content = rs.getString("content");
-				String regDate = rs.getString("to_char(reg_date, 'yyyy-mm-dd HH:MI:SS')");
+				String regDate = rs.getString("reg_date");
 
 				GuestVo vo = new GuestVo(no, name, password, content, regDate);
 				guestList.add(vo);

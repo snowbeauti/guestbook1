@@ -6,6 +6,8 @@
 
 
 <%
+	request.setCharacterEncoding("UTF-8");
+
 	String name = request.getParameter("name");
 	String password = request.getParameter("password");
 	String content = request.getParameter("content");
@@ -17,7 +19,7 @@
 	/*저장*/
 	guestdao.insert(guestVo);
 
-	response.sendRedirect("./list.jsp");
+	response.sendRedirect("./addList.jsp");
 
 %>
 
